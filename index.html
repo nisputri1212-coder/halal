@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Edukasi Halal & AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #047857 0%, #10b981 100%);
+        }
+        .tab-active {
+            border-bottom: 4px solid #10b981;
+            color: #047857;
+            font-weight: 700;
+        }
+        .tab-inactive {
+            border-bottom: 4px solid transparent;
+            color: #64748b;
+        }
+        .tab-inactive:hover {
+            color: #047857;
+            background-color: #f1f5f9;
+        }
+        
+        /* Animations */
+        .answer-reveal {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
+            opacity: 0;
+        }
+        .answer-reveal.open {
+            max-height: 800px;
+            opacity: 1;
+        }
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white">
+                        <i class="fa-solid fa-shield-halal text-xl"></i>
+                    </div>
+                    <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">Halal<span class="text-emerald-600">EduTech</span></h1>
+                </div>
+                
+                <!-- Navigation Tabs -->
+                <nav class="hidden md:flex space-x-2">
+                    <button onclick="switchTab('ai')" id="tab-ai" class="tab-active px-4 py-2 transition-all rounded-t-lg focus:outline-none flex items-center gap-2">
+                        <i class="fa-solid fa-microchip"></i> Praktik AI & Regulasi
+                    </button>
+                    <button onclick="switchTab('kuis')" id="tab-kuis" class="tab-inactive px-4 py-2 transition-all rounded-t-lg focus:outline-none flex items-center gap-2">
+                        <i class="fa-solid fa-list-check"></i> Kuis Titik Kritis
+                    </button>
+                    <button onclick="switchTab('referensi')" id="tab-referensi" class="tab-inactive px-4 py-2 transition-all rounded-t-lg focus:outline-none flex items-center gap-2">
+                        <i class="fa-solid fa-book-open"></i> Referensi
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <select onchange="switchTab(this.value)" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 outline-none">
+                        <option value="ai">Praktik AI & Regulasi</option>
+                        <option value="kuis">Kuis Titik Kritis</option>
+                        <option value="referensi">Referensi</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow">
+        
+        <!-- SECTION 1: AI & Regulasi -->
+        <section id="section-ai" class="fade-in block">
+            <!-- Hero -->
+            <div class="gradient-bg text-white pb-16 pt-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 opacity-10">
+                    <i class="fa-solid fa-microchip absolute top-10 left-10 text-9xl"></i>
+                    <i class="fa-solid fa-book-quran absolute bottom-10 right-20 text-9xl"></i>
+                </div>
+                <div class="max-w-7xl mx-auto relative z-10 text-center">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-sm font-semibold mb-6 border border-white/30">
+                        <i class="fa-solid fa-robot text-emerald-200"></i> Modul Integrasi Kecerdasan Buatan
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">Transformasi Digital SJPH</h2>
+                    <p class="text-lg md:text-xl max-w-3xl mx-auto text-emerald-50 leading-relaxed">
+                        Panduan implementasi teknologi AI untuk memastikan kepatuhan terhadap <b>UU No. 33/2014</b>, <b>PP No. 42/2024</b>, dan <b>SJPH BPJPH</b>.
+                    </p>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20 pb-16">
+                <!-- Regulation Context -->
+                <div class="bg-white/95 backdrop-blur rounded-2xl shadow-xl p-6 md:p-8 mb-12 flex flex-col md:flex-row gap-6 items-center border border-slate-200">
+                    <div class="w-full md:w-1/3 text-center md:text-left border-b md:border-b-0 md:border-r border-slate-200 pb-6 md:pb-0 md:pr-6">
+                        <h2 class="text-2xl font-bold text-slate-900 mb-2">Landasan Hukum</h2>
+                        <p class="text-slate-600 text-sm">Praktik AI dirancang agar sejalan dengan regulasi Jaminan Produk Halal.</p>
+                    </div>
+                    <div class="w-full md:w-2/3 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col items-center text-center">
+                            <i class="fa-solid fa-gavel text-emerald-600 text-2xl mb-2"></i>
+                            <h3 class="font-bold text-sm">UU No. 33 / 2014</h3>
+                            <p class="text-xs text-slate-500 mt-1">Kewajiban Sertifikasi & Pemisahan Fasilitas</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col items-center text-center">
+                            <i class="fa-solid fa-file-signature text-emerald-600 text-2xl mb-2"></i>
+                            <h3 class="font-bold text-sm">PP No. 42 / 2024</h3>
+                            <p class="text-xs text-slate-500 mt-1">Penyelenggaraan JPH & Ketertelusuran</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col items-center text-center">
+                            <i class="fa-solid fa-shield-halal text-emerald-600 text-2xl mb-2"></i>
+                            <h3 class="font-bold text-sm">SJPH BPJPH</h3>
+                            <p class="text-xs text-slate-500 mt-1">5 Prinsip Dasar Jaminan Halal</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Practices Grid -->
+                <h3 class="text-2xl font-bold text-slate-900 mb-6"><i class="fa-solid fa-lightbulb text-amber-500 mr-2"></i> Praktik Terbaik AI</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                    <!-- Practice 1 -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow">
+                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-file-contract"></i></div>
+                        <h4 class="text-lg font-bold mb-2">1. AI Document Processing & OCR</h4>
+                        <p class="text-sm font-semibold text-emerald-600 mb-2">Fokus: Kriteria Bahan (SJPH) & PP 42/2024</p>
+                        <p class="text-slate-600 text-sm">Membaca otomatis dokumen CoA dan spesifikasi bahan dari supplier, lalu memverifikasi silang komposisi dengan database titik kritis BPJPH.</p>
+                    </div>
+                    <!-- Practice 2 -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow">
+                        <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-eye"></i></div>
+                        <h4 class="text-lg font-bold mb-2">2. Computer Vision Produksi</h4>
+                        <p class="text-sm font-semibold text-emerald-600 mb-2">Fokus: UU 33/2014 (Pemisahan Fasilitas)</p>
+                        <p class="text-slate-600 text-sm">CCTV cerdas memantau jalur produksi 24/7 untuk memastikan tidak ada kontaminasi silang najis atau pencampuran alat halal/non-halal.</p>
+                    </div>
+                    <!-- Practice 3 -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow">
+                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-messages"></i></div>
+                        <h4 class="text-lg font-bold mb-2">3. Asisten GenAI (LLM) Penyelia</h4>
+                        <p class="text-sm font-semibold text-emerald-600 mb-2">Fokus: Tim Manajemen Halal</p>
+                        <p class="text-slate-600 text-sm">Chatbot pendamping operasional yang dilatih dengan korpus fatwa MUI dan regulasi untuk menjawab pertanyaan seputar status kehalalan bahan secara instan.</p>
+                    </div>
+                    <!-- Practice 4 -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow">
+                        <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-network-wired"></i></div>
+                        <h4 class="text-lg font-bold mb-2">4. AI Predictive Traceability</h4>
+                        <p class="text-sm font-semibold text-emerald-600 mb-2">Fokus: Ketertelusuran Produk</p>
+                        <p class="text-slate-600 text-sm">Melacak perjalanan bahan baku dari hulu (RPH/Petani) hingga konsumen. Memprediksi risiko vendor berdasarkan riwayat konsistensi halal.</p>
+                    </div>
+                </div>
+
+                <!-- Simulation -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="p-6 bg-slate-50 border-b border-slate-100">
+                        <h3 class="text-xl font-bold text-slate-900"><i class="fa-solid fa-laptop-code text-emerald-600 mr-2"></i> Simulasi AI Screening Komposisi</h3>
+                        <p class="text-sm text-slate-600 mt-1">Uji coba AI memindai daftar komposisi bahan berdasarkan matriks titik kritis SJPH.</p>
+                    </div>
+                    <div class="p-6 flex flex-col md:flex-row gap-8">
+                        <div class="flex-1 relative">
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Masukkan Daftar Komposisi (Ingredients)</label>
+                            <textarea id="ingredients-input" rows="5" class="w-full rounded-xl border-slate-300 border p-4 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Contoh: Tepung terigu, Air, Gula, Shortening, Perisa daging sapi, E471..."></textarea>
+                            
+                            <!-- Custom Warning Message -->
+                            <div id="ai-warning" class="hidden absolute top-10 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-lg text-sm shadow-md">
+                                <i class="fa-solid fa-triangle-exclamation mr-1"></i> Masukkan komposisi terlebih dahulu!
+                            </div>
+
+                            <button onclick="simulateAIScan()" class="mt-4 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl flex justify-center items-center gap-2 transition-colors">
+                                <i class="fa-solid fa-microchip"></i> Mulai Pemindaian AI
+                            </button>
+                        </div>
+                        
+                        <div class="flex-1 bg-slate-900 rounded-xl p-6 text-emerald-400 font-mono text-sm overflow-hidden relative min-h-[200px]">
+                            <div class="absolute top-0 left-0 w-full h-1 bg-emerald-500/20"></div>
+                            <div id="loading-state" class="hidden h-full flex flex-col items-center justify-center opacity-70">
+                                <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3"></i>
+                                <p>Menganalisis matriks SJPH...</p>
+                            </div>
+                            <div id="result-state" class="h-full">
+                                <p class="text-slate-500 mb-2">Terminal Output AI:</p>
+                                <div id="ai-output" class="space-y-2">> Menunggu input dari pengguna...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Kuis Titik Kritis -->
+        <section id="section-kuis" class="hidden fade-in bg-slate-50 py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <i class="fa-solid fa-microscope text-4xl text-emerald-600 mb-4"></i>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">Latihan Titik Kritis Halal</h2>
+                    <p class="text-slate-600 max-w-2xl mx-auto">Uji pengetahuan Anda mengenai titik rawan kehalalan pada berbagai produk dan jasa melalui studi kasus interaktif.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="scenario-container">
+                    <!-- Cards injected by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Referensi -->
+        <section id="section-referensi" class="hidden fade-in py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                    <i class="fa-solid fa-book-open-reader text-emerald-600 mr-3"></i> Sumber Belajar & Referensi
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <a href="https://halalmui.org/mengenal-titik-kritis-kehalalan-produk/" target="_blank" class="block bg-white p-6 rounded-xl shadow-sm hover:shadow-md border border-slate-200 transition-all">
+                        <div class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-4"><i class="fa-solid fa-globe"></i></div>
+                        <h3 class="font-bold text-slate-900">Artikel LPPOM MUI</h3>
+                        <p class="text-sm text-slate-600 mt-2">Panduan dasar titik kritis kehalalan produk hewani, nabati, dan mikrobial.</p>
+                    </a>
+                    <a href="https://www.youtube.com/results?search_query=titik+kritis+halal+bpjph" target="_blank" class="block bg-white p-6 rounded-xl shadow-sm hover:shadow-md border border-slate-200 transition-all">
+                        <div class="w-10 h-10 bg-red-100 text-red-600 rounded-full flex items-center justify-center mb-4"><i class="fa-brands fa-youtube"></i></div>
+                        <h3 class="font-bold text-slate-900">Video Edukasi YouTube</h3>
+                        <p class="text-sm text-slate-600 mt-2">Kumpulan video pelatihan dari BPJPH mengenai jaminan mutu halal.</p>
+                    </a>
+                    <a href="https://pintar.kemenag.go.id/" target="_blank" class="block bg-white p-6 rounded-xl shadow-sm hover:shadow-md border border-slate-200 transition-all">
+                        <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <h3 class="font-bold text-slate-900">MOOC Kemenag (PINTAR)</h3>
+                        <p class="text-sm text-slate-600 mt-2">Platform pelatihan online Kemenag untuk modul Sistem Jaminan Produk Halal.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-slate-500 text-sm mt-auto">
+        <p>© 2026 HalalEduTech - Portal Edukasi Jaminan Produk Halal Terpadu</p>
+    </footer>
+
+    <!-- Logic Script -->
+    <script>
+        // --- TABS LOGIC ---
+        function switchTab(tabId) {
+            // Hide all sections
+            document.getElementById('section-ai').classList.add('hidden');
+            document.getElementById('section-kuis').classList.add('hidden');
+            document.getElementById('section-referensi').classList.add('hidden');
+            
+            // Reset tab styles (Desktop)
+            const tabs = ['tab-ai', 'tab-kuis', 'tab-referensi'];
+            tabs.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) {
+                    el.classList.remove('tab-active');
+                    el.classList.add('tab-inactive');
+                }
+            });
+
+            // Show selected section
+            document.getElementById(`section-${tabId}`).classList.remove('hidden');
+            
+            // Set active tab style (Desktop)
+            const activeTab = document.getElementById(`tab-${tabId}`);
+            if(activeTab) {
+                activeTab.classList.remove('tab-inactive');
+                activeTab.classList.add('tab-active');
+            }
+        }
+
+        // --- AI SCANNER LOGIC ---
+        function simulateAIScan() {
+            const input = document.getElementById('ingredients-input').value;
+            const outputDiv = document.getElementById('ai-output');
+            const loadingState = document.getElementById('loading-state');
+            const resultState = document.getElementById('result-state');
+            const warningBox = document.getElementById('ai-warning');
+
+            if(!input.trim()) {
+                warningBox.classList.remove('hidden');
+                setTimeout(() => warningBox.classList.add('hidden'), 3000);
+                return;
+            }
+
+            loadingState.classList.remove('hidden');
+            resultState.classList.add('hidden');
+            
+            const text = input.toLowerCase();
+            let findings = [];
+
+            setTimeout(() => {
+                if (text.includes('shortening') || text.includes('mentega') || text.includes('margarin')) {
+                    findings.push('<span class="text-red-400">[CRITICAL]</span> Shortening/Lemak terdeteksi. Risiko turunan hewani (Lard).');
+                }
+                if (text.includes('perisa') || text.includes('flavor') || text.includes('daging')) {
+                    findings.push('<span class="text-amber-400">[WARNING]</span> Perisa sintetik terdeteksi. Wajib verifikasi sumber asam amino.');
+                }
+                if (text.includes('e471') || text.includes('emulsifier') || text.includes('pengemulsi')) {
+                    findings.push('<span class="text-amber-400">[WARNING]</span> Emulsifier (E471) terdeteksi. Verifikasi nabati/hewani.');
+                }
+                if (text.includes('rum') || text.includes('khamr') || text.includes('wine') || text.includes('angciu')) {
+                    findings.push('<span class="text-red-500 font-bold">[HARAM]</span> Turunan Khamr terdeteksi. Mutlak diharamkan.');
+                }
+                if (text.includes('gelatin') || text.includes('kolagen')) {
+                    findings.push('<span class="text-red-400">[CRITICAL]</span> Gelatin terdeteksi. Wajib Sertifikat Halal hewani.');
+                }
+                if(findings.length === 0) {
+                    findings.push('<span class="text-emerald-400">[SAFE]</span> Bebas dari kata kunci titik kritis tingkat tinggi.');
+                }
+
+                loadingState.classList.add('hidden');
+                resultState.classList.remove('hidden');
+                
+                outputDiv.innerHTML = `
+                    <p class="text-slate-300">> Memulai analisis: "${input.substring(0, 25)}..."</p>
+                    <p class="text-slate-300">> Mencocokkan SJPH BPJPH...</p>
+                    <p class="text-slate-300 mt-2">> Hasil:</p>
+                    <ul class="list-none space-y-2 mt-1 ml-2">
+                        ${findings.map(f => `<li>${f}</li>`).join('')}
+                    </ul>
+                `;
+            }, 1200);
+        }
+
+        // --- QUIZ LOGIC ---
+        const scenarios = [
+            {
+                id: 1, title: "Gerobak Martabak Manis", icon: "fa-store", category: "Makanan Siap Saji",
+                case: "Pedagang UMKM menggunakan kuas untuk mengoleskan margarin ke loyang dan martabak.",
+                question: "Alat/bahan apa yang berisiko menjadi titik kritis (mengandung babi)?",
+                options: ["Tepung terigu", "Kuas pengoles", "Loyang besi", "Air"],
+                correctAnswer: 1,
+                criticalPoints: ["<b>Kuas Pengoles:</b> Seringkali menggunakan bulu babi (bristle).", "<b>Margarin:</b> Emulsifier berisiko dari hewani."]
+            },
+            {
+                id: 2, title: "Produksi Es Dawet", icon: "fa-glass-water", category: "Minuman",
+                case: "Pembuatan es dawet memeras pandan di blender dan menyaring gula merah cair.",
+                question: "Titik kritis dari proses tersebut adalah...",
+                options: ["Blender bekas non-halal", "Santan kelapa", "Daun pandan", "Es batu"],
+                correctAnswer: 0,
+                criticalPoints: ["<b>Blender:</b> Kontaminasi silang jika digunakan untuk daging non-halal.", "<b>Gula Merah:</b> Filter pemurnian (bone char)."]
+            },
+            {
+                id: 3, title: "Toko Roti & Kue", icon: "fa-cake-candles", category: "Baking",
+                case: "Bakery membuat bolu menggunakan shortening dan perasa kue.",
+                question: "Bahan yang mutlak haram meski dipanggang adalah?",
+                options: ["Baking powder", "Ragi", "Rhum / Likuor", "Pewarna"],
+                correctAnswer: 2,
+                criticalPoints: ["<b>Rhum:</b> Penggunaan khamr mutlak haram meski alkoholnya menguap."]
+            },
+            {
+                id: 4, title: "Krim Anti-Aging", icon: "fa-spray-can-sparkles", category: "Kosmetik",
+                case: "Krim mengandung Kolagen, Ekstrak Plasenta, dan Gliserin.",
+                question: "Bahan yang haram jika bersumber dari manusia adalah?",
+                options: ["Kolagen", "Gliserin", "Plasenta", "Air mawar"],
+                correctAnswer: 2,
+                criticalPoints: ["<b>Plasenta:</b> Plasenta manusia mutlak haram. Plasenta hewan butuh sertifikasi."]
+            },
+            {
+                id: 5, title: "Kapsul Suplemen", icon: "fa-capsules", category: "Farmasi",
+                case: "Suplemen multivitamin dalam kapsul keras transparan.",
+                question: "Titik kritis terbesar sediaan kapsul transparan adalah?",
+                options: ["Tinta cetak", "Cangkang kapsul (Gelatin)", "Botol kemasan", "Kapas penahan"],
+                correctAnswer: 1,
+                criticalPoints: ["<b>Cangkang Kapsul:</b> Gelatin sering diekstrak dari tulang babi/sapi."]
+            },
+            {
+                id: 6, title: "Truk Rantai Dingin", icon: "fa-truck-fast", category: "Logistik",
+                case: "Truk freezer mendistribusikan daging ayam beku halal.",
+                question: "Jika truk pernah mengangkut daging babi, apa syaratnya?",
+                options: ["Dicuci sabun biasa", "Dijemur", "Pencucian najis mughallazah", "Disinfektan"],
+                correctAnswer: 2,
+                criticalPoints: ["<b>Sanitasi:</b> Wajib prosedur penyucian najis berat dengan tanah/sabun khusus."]
+            },
+            {
+                id: 7, title: "Bumbu Kaldu Mie", icon: "fa-bowl-food", category: "Pangan",
+                case: "Pabrik memproduksi mie dengan MSG (Monosodium Glutamat).",
+                question: "Titik kritis MSG mikrobial terletak pada...",
+                options: ["Warna kristal", "Proses kemas", "Rasa umami", "Media tumbuh bakteri"],
+                correctAnswer: 3,
+                criticalPoints: ["<b>Media Pertumbuhan:</b> Bakteri fermentasi tidak boleh dikembangbiakkan di media najis/babi."]
+            }
+        ];
+
+        function renderCards() {
+            const container = document.getElementById('scenario-container');
+            container.innerHTML = scenarios.map((item, index) => `
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">${item.category}</span>
+                        <i class="fa-solid ${item.icon} text-slate-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">${item.id}. ${item.title}</h3>
+                    <p class="text-slate-600 mb-4 text-sm">${item.case}</p>
+                    
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 mb-4">
+                        <p class="font-semibold text-slate-800 mb-3 text-sm">${item.question}</p>
+                        <div class="space-y-2" id="options-${item.id}">
+                            ${item.options.map((opt, i) => `
+                                <button onclick="checkAnswer(${item.id}, ${i})" class="w-full text-left p-3 rounded-lg border border-slate-200 bg-white hover:bg-emerald-50 text-sm font-medium transition-colors flex justify-between items-center">
+                                    <span>${String.fromCharCode(65 + i)}. ${opt}</span>
+                                    <i class="fa-solid fa-circle-check text-emerald-500 hidden check-icon"></i>
+                                    <i class="fa-solid fa-circle-xmark text-red-500 hidden cross-icon"></i>
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <button id="btn-analysis-${item.id}" onclick="toggleAnswer(${item.id})" class="hidden w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold py-3 px-4 rounded-xl transition-colors justify-between items-center text-sm">
+                        <span>Lihat Analisis</span>
+                        <i class="fa-solid fa-chevron-down" id="icon-${item.id}"></i>
+                    </button>
+                    
+                    <div id="answer-${item.id}" class="answer-reveal mt-2">
+                        <div class="p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg text-sm">
+                            <ul class="list-disc pl-4 text-slate-700 space-y-1">
+                                ${item.criticalPoints.map(point => `<li>${point}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function checkAnswer(scenarioId, selectedIndex) {
+            const scenario = scenarios.find(s => s.id === scenarioId);
+            const container = document.getElementById(`options-${scenarioId}`);
+            const buttons = container.querySelectorAll('button');
+            
+            buttons.forEach((btn, i) => {
+                btn.disabled = true;
+                btn.classList.add('cursor-not-allowed');
+                
+                if (i === scenario.correctAnswer) {
+                    btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-800');
+                    btn.querySelector('.check-icon').classList.remove('hidden');
+                } else if (i === selectedIndex) {
+                    btn.classList.add('bg-red-100', 'border-red-500', 'text-red-800');
+                    btn.querySelector('.cross-icon').classList.remove('hidden');
+                } else {
+                    btn.classList.add('opacity-50');
+                }
+            });
+
+            document.getElementById(`btn-analysis-${scenarioId}`).classList.remove('hidden');
+            document.getElementById(`btn-analysis-${scenarioId}`).classList.add('flex');
+            
+            const answerDiv = document.getElementById(`answer-${scenarioId}`);
+            if (!answerDiv.classList.contains('open')) toggleAnswer(scenarioId);
+        }
+
+        function toggleAnswer(id) {
+            const div = document.getElementById(`answer-${id}`);
+            const icon = document.getElementById(`icon-${id}`);
+            div.classList.toggle('open');
+            icon.classList.toggle('fa-chevron-down');
+            icon.classList.toggle('fa-chevron-up');
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', renderCards);
+    </script>
+</body>
+</html>
