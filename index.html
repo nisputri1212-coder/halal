@@ -3,481 +3,821 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Edukasi Halal & AI</title>
+    <title>Ekonomi Sirkular dalam Pengembangan Produk Halal - Platform Pembelajaran Interaktif</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        },
+                        amber: {
+                            50: '#fffbeb',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        slate: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f8fafc;
-        }
-        .gradient-bg {
-            background: linear-gradient(135deg, #047857 0%, #10b981 100%);
-        }
-        .tab-active {
-            border-bottom: 4px solid #10b981;
-            color: #047857;
-            font-weight: 700;
-        }
-        .tab-inactive {
-            border-bottom: 4px solid transparent;
-            color: #64748b;
-        }
-        .tab-inactive:hover {
-            color: #047857;
-            background-color: #f1f5f9;
-        }
-        
-        /* Animations */
-        .answer-reveal {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
-            opacity: 0;
-        }
-        .answer-reveal.open {
-            max-height: 800px;
-            opacity: 1;
-        }
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-        }
-        .fade-in {
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+        .tab-active { border-bottom: 3px solid #059669; color: #059669; font-weight: 700; }
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white; color: black; }
         }
     </style>
 </head>
-<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="text-slate-800 antialiased min-h-screen flex flex-col justify-between">
 
-    <!-- Header -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
+    <!-- Header Navigation -->
+    <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md no-print">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white">
-                        <i class="fa-solid fa-shield-halal text-xl"></i>
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo & Title -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('teori')">
+                    <div class="bg-emerald-600 p-2 rounded-lg text-white">
+                        <i class="fa-solid fa-arrows-spin text-xl"></i>
                     </div>
-                    <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">Halal<span class="text-emerald-600">EduTech</span></h1>
+                    <div>
+                        <span class="font-bold text-lg tracking-wide text-emerald-400 block leading-tight">EcoHalal Circular</span>
+                        <span class="text-xs text-slate-400 hidden sm:block">Pengembangan Produk Halal & Ekonomi Sirkular</span>
+                    </div>
                 </div>
-                
+
                 <!-- Navigation Tabs -->
-                <nav class="hidden md:flex space-x-2">
-                    <button onclick="switchTab('ai')" id="tab-ai" class="tab-active px-4 py-2 transition-all rounded-t-lg focus:outline-none flex items-center gap-2">
-                        <i class="fa-solid fa-microchip"></i> Praktik AI & Regulasi
+                <nav class="hidden md:flex space-x-1 lg:space-x-4">
+                    <button onclick="switchTab('teori')" id="tab-btn-teori" class="nav-tab px-3 py-2 text-sm font-medium hover:text-emerald-400 transition tab-active">
+                        <i class="fa-solid fa-book-open mr-1.5"></i> Modul Teori
                     </button>
-                    <button onclick="switchTab('kuis')" id="tab-kuis" class="tab-inactive px-4 py-2 transition-all rounded-t-lg focus:outline-none flex items-center gap-2">
-                        <i class="fa-solid fa-list-check"></i> Kuis Titik Kritis
+                    <button onclick="switchTab('simulator')" id="tab-btn-simulator" class="nav-tab px-3 py-2 text-sm font-medium hover:text-emerald-400 transition">
+                        <i class="fa-solid fa-flask mr-1.5"></i> Simulator Skenario
                     </button>
-                    <button onclick="switchTab('referensi')" id="tab-referensi" class="tab-inactive px-4 py-2 transition-all rounded-t-lg focus:outline-none flex items-center gap-2">
-                        <i class="fa-solid fa-book-open"></i> Referensi
+                    <button onclick="switchTab('youtube')" id="tab-btn-youtube" class="nav-tab px-3 py-2 text-sm font-medium hover:text-emerald-400 transition">
+                        <i class="fa-brands fa-youtube mr-1.5"></i> Referensi Video
+                    </button>
+                    <button onclick="switchTab('glosarium')" id="tab-btn-glosarium" class="nav-tab px-3 py-2 text-sm font-medium hover:text-emerald-400 transition">
+                        <i class="fa-solid fa-book-bookmark mr-1.5"></i> Glosarium
                     </button>
                 </nav>
 
-                <!-- Mobile Menu Button -->
+                <!-- Mobile menu button -->
                 <div class="md:hidden">
-                    <select onchange="switchTab(this.value)" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 outline-none">
-                        <option value="ai">Praktik AI & Regulasi</option>
-                        <option value="kuis">Kuis Titik Kritis</option>
-                        <option value="referensi">Referensi</option>
-                    </select>
+                    <button onclick="toggleMobileMenu()" class="text-slate-300 hover:text-white p-2">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
                 </div>
             </div>
         </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-800 px-4 pt-2 pb-4 space-y-2 border-t border-slate-700">
+            <button onclick="switchTab('teori'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 text-sm font-medium text-slate-200 hover:bg-slate-700 rounded-md">
+                <i class="fa-solid fa-book-open mr-2 text-emerald-400"></i> Modul Teori
+            </button>
+            <button onclick="switchTab('simulator'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 text-sm font-medium text-slate-200 hover:bg-slate-700 rounded-md">
+                <i class="fa-solid fa-flask mr-2 text-emerald-400"></i> Simulator 10 Skenario
+            </button>
+            <button onclick="switchTab('youtube'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 text-sm font-medium text-slate-200 hover:bg-slate-700 rounded-md">
+                <i class="fa-brands fa-youtube mr-2 text-red-400"></i> Referensi Video YouTube
+            </button>
+            <button onclick="switchTab('glosarium'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 text-sm font-medium text-slate-200 hover:bg-slate-700 rounded-md">
+                <i class="fa-solid fa-book-bookmark mr-2 text-emerald-400"></i> Glosarium Istilah
+            </button>
+        </div>
     </header>
 
-    <!-- Main Content Area -->
-    <main class="flex-grow">
-        
-        <!-- SECTION 1: AI & Regulasi -->
-        <section id="section-ai" class="fade-in block">
-            <!-- Hero -->
-            <div class="gradient-bg text-white pb-16 pt-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 opacity-10">
-                    <i class="fa-solid fa-microchip absolute top-10 left-10 text-9xl"></i>
-                    <i class="fa-solid fa-book-quran absolute bottom-10 right-20 text-9xl"></i>
-                </div>
-                <div class="max-w-7xl mx-auto relative z-10 text-center">
-                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-sm font-semibold mb-6 border border-white/30">
-                        <i class="fa-solid fa-robot text-emerald-200"></i> Modul Integrasi Kecerdasan Buatan
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- TAB 1: MODUL TEORI -->
+        <section id="tab-teori" class="tab-content space-y-8">
+            <!-- Hero Banner -->
+            <div class="bg-gradient-to-r from-emerald-900 via-slate-900 to-emerald-900 rounded-2xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+                <div class="relative z-10 max-w-3xl">
+                    <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-300 text-xs font-semibold rounded-full uppercase tracking-wider mb-3 border border-emerald-500/30">
+                        Mata Kuliah: Pengembangan Produk Halal
+                    </span>
+                    <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-4 leading-tight">
+                        Ekonomi Sirkular dalam Pengembangan Produk Halal
+                    </h1>
+                    <p class="text-slate-300 text-sm sm:text-base mb-6 leading-relaxed">
+                        Menghubungkan konsep <span class="text-emerald-400 font-semibold">Halalan Thayyiban</span> dengan prinsip keberlanjutan. Memastikan produk tidak hanya sah secara kriteria syariat tetapi juga bebas dari pemborosan (<span class="italic">israf</span>) dan kerusakan lingkungan (<span class="italic">fasad</span>).
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="switchTab('simulator')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold px-5 py-2.5 rounded-lg shadow-md transition flex items-center">
+                            Mulai Simulator Skenario <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </button>
+                        <button onclick="switchTab('youtube')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-semibold px-5 py-2.5 rounded-lg border border-slate-700 transition flex items-center">
+                            <i class="fa-brands fa-youtube text-red-500 mr-2 text-base"></i> Tonton Referensi Video
+                        </button>
                     </div>
-                    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">Transformasi Digital SJPH</h2>
-                    <p class="text-lg md:text-xl max-w-3xl mx-auto text-emerald-50 leading-relaxed">
-                        Panduan implementasi teknologi AI untuk memastikan kepatuhan terhadap <b>UU No. 33/2014</b>, <b>PP No. 42/2024</b>, dan <b>SJPH BPJPH</b>.
+                </div>
+            </div>
+
+            <!-- Conceptual Framework Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center text-xl font-bold mb-4">
+                        <i class="fa-solid fa-arrows-rotate"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-900 mb-2">Linear vs Sirkular</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        Ekonomi linear berprinsip <em>"Take - Make - Waste"</em>. Ekonomi sirkular merancang ulang sistem agar bahan tetap bernilai tinggi selama mungkin melalui perbaikan, pakai ulang, dan daur ulang.
+                    </p>
+                    <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md">
+                        3 Prinsip: Eliminasi Sampah, Sirkulasi, Regenerasi
+                    </span>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-lg flex items-center justify-center text-xl font-bold mb-4">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-900 mb-2">Maqashid Syariah & Thayyib</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        Memperluas cakupan <em>Thayyib</em> hingga ke dampak lingkungan. Prinsip <strong>Hifz al-Bi'ah</strong> (menjaga lingkungan) melengkapi perlindungan harta (<em>Hifz al-Mal</em>) dan jiwa (<em>Hifz an-Nafs</em>).
+                    </p>
+                    <span class="text-xs font-semibold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md">
+                        QS. Al-A'raf: 31 & Ar-Rum: 41
+                    </span>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="w-12 h-12 bg-red-100 text-red-700 rounded-lg flex items-center justify-center text-xl font-bold mb-4">
+                        <i class="fa-solid fa-shield-halal text-xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-900 mb-2">Titik Kritis Halal</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        Saat bahan diputar kembali (recycled/refill), muncul tantangan ketertelusuran (<em>traceability</em>), risiko kontaminasi najis pada kemasan daur ulang, serta kejelasan status hukum <em>Istihalah</em>.
+                    </p>
+                    <span class="text-xs font-semibold text-red-700 bg-red-50 px-2.5 py-1 rounded-md">
+                        Traceability & Higienitas Sistem Refill
+                    </span>
+                </div>
+            </div>
+
+            <!-- Framework 9R Section -->
+            <div class="bg-white p-6 sm:p-8 rounded-xl border border-slate-200 shadow-sm">
+                <div class="flex items-center justify-between mb-6 flex-wrap gap-2">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900">Kerangka Strategi 9R (Bappenas & Ellen MacArthur)</h2>
+                        <p class="text-xs text-slate-500">Urutan strategi dari tingkat kesirkularan tertinggi hingga terkecil</p>
+                    </div>
+                    <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-medium">Bappenas 2025-2045</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <!-- High Circularity -->
+                    <div class="space-y-3 bg-emerald-50/50 p-4 rounded-lg border border-emerald-100">
+                        <span class="text-xs font-bold text-emerald-800 uppercase tracking-wider block">Smarter Use & Manufacture</span>
+                        <div class="bg-white p-3 rounded shadow-sm border border-emerald-100 text-sm">
+                            <strong class="text-emerald-700">R0 Refuse:</strong> Menolak bahan berbahaya/kemasan tak perlu.
+                        </div>
+                        <div class="bg-white p-3 rounded shadow-sm border border-emerald-100 text-sm">
+                            <strong class="text-emerald-700">R1 Rethink:</strong> Mengubah model bisnis (misal: sistem refill).
+                        </div>
+                        <div class="bg-white p-3 rounded shadow-sm border border-emerald-100 text-sm">
+                            <strong class="text-emerald-700">R2 Reduce:</strong> Meminimalkan porsi/bahan & energi.
+                        </div>
+                    </div>
+
+                    <!-- Medium Circularity -->
+                    <div class="space-y-3 bg-amber-50/50 p-4 rounded-lg border border-amber-100">
+                        <span class="text-xs font-bold text-amber-800 uppercase tracking-wider block">Extend Lifespan</span>
+                        <div class="bg-white p-3 rounded shadow-sm border border-amber-100 text-sm">
+                            <strong class="text-amber-700">R3 Reuse:</strong> Menggunakan kembali wadah/kemasan.
+                        </div>
+                        <div class="bg-white p-3 rounded shadow-sm border border-amber-100 text-sm">
+                            <strong class="text-amber-700">R4 Repair:</strong> Memperbaiki komponen rusak.
+                        </div>
+                        <div class="bg-white p-3 rounded shadow-sm border border-amber-100 text-sm">
+                            <strong class="text-amber-700">R5 Refurbish:</strong> Memperbarui tampilan/fungsi produk.
+                        </div>
+                        <div class="bg-white p-3 rounded shadow-sm border border-amber-100 text-sm">
+                            <strong class="text-amber-700">R6 Remanufacture:</strong> Komponen lama untuk produk baru.
+                        </div>
+                    </div>
+
+                    <!-- Low Circularity -->
+                    <div class="space-y-3 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <span class="text-xs font-bold text-slate-700 uppercase tracking-wider block">Useful Application</span>
+                        <div class="bg-white p-3 rounded shadow-sm border border-slate-200 text-sm">
+                            <strong class="text-slate-800">R7 Repurpose:</strong> Mengubah fungsi limbah (misal: ampas tahu jadi pakan).
+                        </div>
+                        <div class="bg-white p-3 rounded shadow-sm border border-slate-200 text-sm">
+                            <strong class="text-slate-800">R8 Recycle:</strong> Mengolah kembali material menjadi bahan baku.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: SIMULATOR SKENARIO INTERAKTIF -->
+        <section id="tab-simulator" class="tab-content hidden space-y-6">
+            <!-- Header Simulator -->
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between md:items-center gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Simulator Interaktif Produk & Jasa Halal Sirkular</h2>
+                    <p class="text-slate-500 text-sm">Pilih 1 dari 10 skenario industri halal, sesuaikan parameternya, dan evaluasi hasilnya secara real-time.</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button onclick="window.print()" class="no-print bg-slate-800 hover:bg-slate-700 text-white text-xs px-3.5 py-2 rounded-lg transition flex items-center font-medium shadow-sm">
+                        <i class="fa-solid fa-print mr-1.5"></i> Cetak / Ekspor Laporan
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Sidebar Skenario List (Left Column) -->
+                <div class="lg:col-span-4 space-y-3 no-print">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Pilih 1 dari 10 Skenario Kasus:</label>
+                    <div id="scenario-selector-container" class="space-y-2 max-h-[620px] overflow-y-auto pr-1">
+                        <!-- Scenario buttons generated dynamically via JS -->
+                    </div>
+                </div>
+
+                <!-- Active Scenario Interactive Panel (Right Column) -->
+                <div class="lg:col-span-8 space-y-6">
+                    <!-- Scenario Info Card -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm relative">
+                        <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+                            <span id="scen-category" class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded">Pangan</span>
+                            <span id="scen-npd-stage" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-diagram-project mr-1"></i> Tahap NPD</span>
+                        </div>
+                        <h3 id="scen-title" class="text-xl font-bold text-slate-900 mb-2">1. Sambal Kemasan Botol Plastik UMKM</h3>
+                        <p id="scen-desc" class="text-slate-600 text-sm leading-relaxed mb-4">
+                            Deskripsi skenario...
+                        </p>
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs space-y-1">
+                            <div><strong class="text-slate-700">Masalah Baseline:</strong> <span id="scen-baseline">-</span></div>
+                            <div><strong class="text-slate-700">Titik Kritis Halal Awal:</strong> <span id="scen-halal-base">-</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Process Tweaking Controls -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-5">
+                        <h4 class="font-bold text-slate-900 text-base border-b border-slate-100 pb-2 flex items-center">
+                            <i class="fa-solid fa-sliders text-emerald-600 mr-2"></i> Pengubah Proses Sirkular (Tweak Tool)
+                        </h4>
+
+                        <!-- Selector 1: Tahap Rantai Pasok/NPD -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">1. Pilih Tahap Proses yang Disesuaikan:</label>
+                            <select id="tweak-stage-select" onchange="updateAnalyticalScores()" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                                <option value="design" selected>Desain Produk & Pemilihan Kemasan (NPD Concept Stage)</option>
+                                <option value="sourcing">Pengadaan Bahan Baku & Rantai Pasok (Sourcing Stage)</option>
+                                <option value="production">Proses Produksi & Pengolahan Limbah (Production Stage)</option>
+                                <option value="post-consumer">Pasca Konsumsi & Model Distribusi (Distribution/Return Stage)</option>
+                            </select>
+                        </div>
+
+                        <!-- Selector 2: Strategi 9R yang Diterapkan -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">2. Terapkan Strategi 9R pada Tahap Ini:</label>
+                            <select id="tweak-9r-select" onchange="updateAnalyticalScores()" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                                <option value="R0">R0 Refuse (Tolak bahan tak ramah lingkungan/plastik sekali pakai)</option>
+                                <option value="R1" selected>R1 Rethink (Ubah ke sistem isi ulang / Sewa / Guna Ulang)</option>
+                                <option value="R2">R2 Reduce (Kurangi ketebalan bahan / Efisiensi Porsi & Energi)</option>
+                                <option value="R3">R3 Reuse (Wadah kemasan dapat dikembalikan / Dicuci Ulang)</option>
+                                <option value="R7">R7 Repurpose (Alih fungsikan sisa sampingan / Sisa Pangan)</option>
+                                <option value="R8">R8 Recycle (Gunakan material terdaur ulang / rPET Food Grade)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Real-Time Analytical Scorecard & Output -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
+                        <h4 class="font-bold text-slate-900 text-base border-b border-slate-100 pb-2 flex items-center justify-between">
+                            <span><i class="fa-solid fa-chart-pie text-emerald-600 mr-2"></i> Hasil Analisis & Dynamic Feedback</span>
+                            <span class="text-xs font-normal text-slate-400">Evaluasi Real-time</span>
+                        </h4>
+
+                        <!-- Metric Indicators Bar -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+                            <div class="bg-emerald-50 p-3 rounded-lg border border-emerald-100">
+                                <span class="text-xs text-emerald-800 font-semibold block mb-1">Dampak Sirkular</span>
+                                <span id="score-env" class="text-xl font-extrabold text-emerald-700">85/100</span>
+                                <span id="loop-type" class="text-[10px] bg-emerald-200 text-emerald-800 font-bold px-1.5 py-0.5 rounded block mt-1">Slowing Loop</span>
+                            </div>
+                            <div class="bg-red-50 p-3 rounded-lg border border-red-100">
+                                <span class="text-xs text-red-800 font-semibold block mb-1">Risiko Halal</span>
+                                <span id="score-halal" class="text-xl font-extrabold text-red-700">Sedang</span>
+                                <span id="halal-tag" class="text-[10px] bg-red-200 text-red-800 font-bold px-1.5 py-0.5 rounded block mt-1">SOP Washing</span>
+                            </div>
+                            <div class="bg-amber-50 p-3 rounded-lg border border-amber-100">
+                                <span class="text-xs text-amber-800 font-semibold block mb-1">Maqashid Utama</span>
+                                <span id="score-maqashid" class="text-sm font-extrabold text-amber-800 block mt-1">Hifz al-Bi'ah</span>
+                                <span class="text-[10px] text-amber-700 font-medium block">& Hifz al-Mal</span>
+                            </div>
+                            <div class="bg-slate-100 p-3 rounded-lg border border-slate-200">
+                                <span class="text-xs text-slate-700 font-semibold block mb-1">Kelayakan Bisnis</span>
+                                <span id="score-biz" class="text-sm font-extrabold text-slate-800 block mt-1">Tinggi</span>
+                                <span class="text-[10px] text-slate-500 font-medium block">NPD Validated</span>
+                            </div>
+                        </div>
+
+                        <!-- Detailed Feedback Narrative -->
+                        <div class="space-y-4 text-sm">
+                            <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                                <h5 class="font-bold text-slate-800 mb-1 flex items-center">
+                                    <i class="fa-solid fa-leaf text-emerald-600 mr-2"></i> Dampak Lingkungan & Siklus Material:
+                                </h5>
+                                <p id="feedback-env" class="text-slate-600 leading-relaxed">
+                                    -
+                                </p>
+                            </div>
+
+                            <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                                <h5 class="font-bold text-slate-800 mb-1 flex items-center">
+                                    <i class="fa-solid fa-shield-cat text-amber-600 mr-2"></i> Analisis Titik Kritis Halal & Suci (Halal Critical Control Points):
+                                </h5>
+                                <p id="feedback-halal" class="text-slate-600 leading-relaxed">
+                                    -
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Guided Student Critical Thinking Prompts -->
+                        <div class="bg-emerald-900 text-white p-5 rounded-xl shadow-inner space-y-3">
+                            <h5 class="font-bold text-emerald-300 flex items-center">
+                                <i class="fa-solid fa-lightbulb mr-2"></i> Pertanyaan Analitis Mahasiswa (Bahan Diskusi Kelas):
+                            </h5>
+                            <ol id="prompt-list" class="list-decimal list-inside text-xs sm:text-sm space-y-2 text-emerald-100">
+                                <!-- Prompts rendered via JS -->
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: REFERENSI YOUTUBE & GALERI VIDEO -->
+        <section id="tab-youtube" class="tab-content hidden space-y-8">
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                <div class="max-w-2xl">
+                    <h2 class="text-xl font-bold text-slate-900 mb-2">Referensi Video & Dokumenter Pembelajaran</h2>
+                    <p class="text-slate-600 text-sm">
+                        Kumpulan materi YouTube terpilih mengenai Ekonomi Sirkular, kerangka 9R, biokonversi sisa pangan, serta penguatan prinsip syariah dalam keberlanjutan produk.
                     </p>
                 </div>
             </div>
 
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20 pb-16">
-                <!-- Regulation Context -->
-                <div class="bg-white/95 backdrop-blur rounded-2xl shadow-xl p-6 md:p-8 mb-12 flex flex-col md:flex-row gap-6 items-center border border-slate-200">
-                    <div class="w-full md:w-1/3 text-center md:text-left border-b md:border-b-0 md:border-r border-slate-200 pb-6 md:pb-0 md:pr-6">
-                        <h2 class="text-2xl font-bold text-slate-900 mb-2">Landasan Hukum</h2>
-                        <p class="text-slate-600 text-sm">Praktik AI dirancang agar sejalan dengan regulasi Jaminan Produk Halal.</p>
-                    </div>
-                    <div class="w-full md:w-2/3 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col items-center text-center">
-                            <i class="fa-solid fa-gavel text-emerald-600 text-2xl mb-2"></i>
-                            <h3 class="font-bold text-sm">UU No. 33 / 2014</h3>
-                            <p class="text-xs text-slate-500 mt-1">Kewajiban Sertifikasi & Pemisahan Fasilitas</p>
-                        </div>
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col items-center text-center">
-                            <i class="fa-solid fa-file-signature text-emerald-600 text-2xl mb-2"></i>
-                            <h3 class="font-bold text-sm">PP No. 42 / 2024</h3>
-                            <p class="text-xs text-slate-500 mt-1">Penyelenggaraan JPH & Ketertelusuran</p>
-                        </div>
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col items-center text-center">
-                            <i class="fa-solid fa-shield-halal text-emerald-600 text-2xl mb-2"></i>
-                            <h3 class="font-bold text-sm">SJPH BPJPH</h3>
-                            <p class="text-xs text-slate-500 mt-1">5 Prinsip Dasar Jaminan Halal</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- AI Practices Grid -->
-                <h3 class="text-2xl font-bold text-slate-900 mb-6"><i class="fa-solid fa-lightbulb text-amber-500 mr-2"></i> Praktik Terbaik AI</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-                    <!-- Practice 1 -->
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow">
-                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-file-contract"></i></div>
-                        <h4 class="text-lg font-bold mb-2">1. AI Document Processing & OCR</h4>
-                        <p class="text-sm font-semibold text-emerald-600 mb-2">Fokus: Kriteria Bahan (SJPH) & PP 42/2024</p>
-                        <p class="text-slate-600 text-sm">Membaca otomatis dokumen CoA dan spesifikasi bahan dari supplier, lalu memverifikasi silang komposisi dengan database titik kritis BPJPH.</p>
-                    </div>
-                    <!-- Practice 2 -->
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow">
-                        <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-eye"></i></div>
-                        <h4 class="text-lg font-bold mb-2">2. Computer Vision Produksi</h4>
-                        <p class="text-sm font-semibold text-emerald-600 mb-2">Fokus: UU 33/2014 (Pemisahan Fasilitas)</p>
-                        <p class="text-slate-600 text-sm">CCTV cerdas memantau jalur produksi 24/7 untuk memastikan tidak ada kontaminasi silang najis atau pencampuran alat halal/non-halal.</p>
-                    </div>
-                    <!-- Practice 3 -->
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow">
-                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-messages"></i></div>
-                        <h4 class="text-lg font-bold mb-2">3. Asisten GenAI (LLM) Penyelia</h4>
-                        <p class="text-sm font-semibold text-emerald-600 mb-2">Fokus: Tim Manajemen Halal</p>
-                        <p class="text-slate-600 text-sm">Chatbot pendamping operasional yang dilatih dengan korpus fatwa MUI dan regulasi untuk menjawab pertanyaan seputar status kehalalan bahan secara instan.</p>
-                    </div>
-                    <!-- Practice 4 -->
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow">
-                        <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-network-wired"></i></div>
-                        <h4 class="text-lg font-bold mb-2">4. AI Predictive Traceability</h4>
-                        <p class="text-sm font-semibold text-emerald-600 mb-2">Fokus: Ketertelusuran Produk</p>
-                        <p class="text-slate-600 text-sm">Melacak perjalanan bahan baku dari hulu (RPH/Petani) hingga konsumen. Memprediksi risiko vendor berdasarkan riwayat konsistensi halal.</p>
-                    </div>
-                </div>
-
-                <!-- Simulation -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div class="p-6 bg-slate-50 border-b border-slate-100">
-                        <h3 class="text-xl font-bold text-slate-900"><i class="fa-solid fa-laptop-code text-emerald-600 mr-2"></i> Simulasi AI Screening Komposisi</h3>
-                        <p class="text-sm text-slate-600 mt-1">Uji coba AI memindai daftar komposisi bahan berdasarkan matriks titik kritis SJPH.</p>
-                    </div>
-                    <div class="p-6 flex flex-col md:flex-row gap-8">
-                        <div class="flex-1 relative">
-                            <label class="block text-sm font-semibold text-slate-700 mb-2">Masukkan Daftar Komposisi (Ingredients)</label>
-                            <textarea id="ingredients-input" rows="5" class="w-full rounded-xl border-slate-300 border p-4 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Contoh: Tepung terigu, Air, Gula, Shortening, Perisa daging sapi, E471..."></textarea>
-                            
-                            <!-- Custom Warning Message -->
-                            <div id="ai-warning" class="hidden absolute top-10 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-lg text-sm shadow-md">
-                                <i class="fa-solid fa-triangle-exclamation mr-1"></i> Masukkan komposisi terlebih dahulu!
-                            </div>
-
-                            <button onclick="simulateAIScan()" class="mt-4 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl flex justify-center items-center gap-2 transition-colors">
-                                <i class="fa-solid fa-microchip"></i> Mulai Pemindaian AI
-                            </button>
-                        </div>
-                        
-                        <div class="flex-1 bg-slate-900 rounded-xl p-6 text-emerald-400 font-mono text-sm overflow-hidden relative min-h-[200px]">
-                            <div class="absolute top-0 left-0 w-full h-1 bg-emerald-500/20"></div>
-                            <div id="loading-state" class="hidden h-full flex flex-col items-center justify-center opacity-70">
-                                <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3"></i>
-                                <p>Menganalisis matriks SJPH...</p>
-                            </div>
-                            <div id="result-state" class="h-full">
-                                <p class="text-slate-500 mb-2">Terminal Output AI:</p>
-                                <div id="ai-output" class="space-y-2">> Menunggu input dari pengguna...</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <!-- Video Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6" id="video-gallery-grid">
+                <!-- Video cards dynamically generated via JavaScript -->
             </div>
         </section>
 
-        <!-- SECTION 2: Kuis Titik Kritis -->
-        <section id="section-kuis" class="hidden fade-in bg-slate-50 py-12">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-10">
-                    <i class="fa-solid fa-microscope text-4xl text-emerald-600 mb-4"></i>
-                    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">Latihan Titik Kritis Halal</h2>
-                    <p class="text-slate-600 max-w-2xl mx-auto">Uji pengetahuan Anda mengenai titik rawan kehalalan pada berbagai produk dan jasa melalui studi kasus interaktif.</p>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="scenario-container">
-                    <!-- Cards injected by JS -->
+        <!-- TAB 4: GLOSARIUM ISTILAH -->
+        <section id="tab-glosarium" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900">Glosarium Istilah & Definisi</h2>
+                        <p class="text-slate-500 text-sm">Kamus konsep Ekonomi Sirkular, Prinsip Syariah, dan Pengembangan Produk Halal.</p>
+                    </div>
+                    <!-- Search & Filter Controls -->
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <input type="text" id="glossary-search" oninput="filterGlossary()" placeholder="Cari istilah..." class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <select id="glossary-category" onchange="filterGlossary()" class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="all">Semua Kategori</option>
+                            <option value="sirkular">Ekonomi Sirkular</option>
+                            <option value="syariah">Syariah & Halal</option>
+                            <option value="npd">NPD & Bisnis</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </section>
 
-        <!-- SECTION 3: Referensi -->
-        <section id="section-referensi" class="hidden fade-in py-12">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
-                    <i class="fa-solid fa-book-open-reader text-emerald-600 mr-3"></i> Sumber Belajar & Referensi
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <a href="https://halalmui.org/mengenal-titik-kritis-kehalalan-produk/" target="_blank" class="block bg-white p-6 rounded-xl shadow-sm hover:shadow-md border border-slate-200 transition-all">
-                        <div class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-4"><i class="fa-solid fa-globe"></i></div>
-                        <h3 class="font-bold text-slate-900">Artikel LPPOM MUI</h3>
-                        <p class="text-sm text-slate-600 mt-2">Panduan dasar titik kritis kehalalan produk hewani, nabati, dan mikrobial.</p>
-                    </a>
-                    <a href="https://www.youtube.com/results?search_query=titik+kritis+halal+bpjph" target="_blank" class="block bg-white p-6 rounded-xl shadow-sm hover:shadow-md border border-slate-200 transition-all">
-                        <div class="w-10 h-10 bg-red-100 text-red-600 rounded-full flex items-center justify-center mb-4"><i class="fa-brands fa-youtube"></i></div>
-                        <h3 class="font-bold text-slate-900">Video Edukasi YouTube</h3>
-                        <p class="text-sm text-slate-600 mt-2">Kumpulan video pelatihan dari BPJPH mengenai jaminan mutu halal.</p>
-                    </a>
-                    <a href="https://pintar.kemenag.go.id/" target="_blank" class="block bg-white p-6 rounded-xl shadow-sm hover:shadow-md border border-slate-200 transition-all">
-                        <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4"><i class="fa-solid fa-graduation-cap"></i></div>
-                        <h3 class="font-bold text-slate-900">MOOC Kemenag (PINTAR)</h3>
-                        <p class="text-sm text-slate-600 mt-2">Platform pelatihan online Kemenag untuk modul Sistem Jaminan Produk Halal.</p>
-                    </a>
-                </div>
+            <!-- Glossary List Container -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="glossary-grid">
+                <!-- Rendered dynamically -->
             </div>
         </section>
 
     </main>
 
-    <footer class="bg-white border-t border-slate-200 py-6 text-center text-slate-500 text-sm mt-auto">
-        <p>© 2026 HalalEduTech - Portal Edukasi Jaminan Produk Halal Terpadu</p>
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 text-xs text-center no-print">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p>Ekonomi Sirkular dalam Pengembangan Produk Halal &copy; Platform Pembelajaran Interaktif Bisnis Islam.</p>
+            <p class="text-slate-500">Dirancang khusus untuk mengasah keterampilan analitis mahasiswa.</p>
+        </div>
     </footer>
 
-    <!-- Logic Script -->
+    <!-- JavaScript Data & Core App Engine -->
     <script>
-        // --- TABS LOGIC ---
-        function switchTab(tabId) {
-            // Hide all sections
-            document.getElementById('section-ai').classList.add('hidden');
-            document.getElementById('section-kuis').classList.add('hidden');
-            document.getElementById('section-referensi').classList.add('hidden');
-            
-            // Reset tab styles (Desktop)
-            const tabs = ['tab-ai', 'tab-kuis', 'tab-referensi'];
-            tabs.forEach(id => {
-                const el = document.getElementById(id);
-                if(el) {
-                    el.classList.remove('tab-active');
-                    el.classList.add('tab-inactive');
-                }
-            });
-
-            // Show selected section
-            document.getElementById(`section-${tabId}`).classList.remove('hidden');
-            
-            // Set active tab style (Desktop)
-            const activeTab = document.getElementById(`tab-${tabId}`);
-            if(activeTab) {
-                activeTab.classList.remove('tab-inactive');
-                activeTab.classList.add('tab-active');
-            }
-        }
-
-        // --- AI SCANNER LOGIC ---
-        function simulateAIScan() {
-            const input = document.getElementById('ingredients-input').value;
-            const outputDiv = document.getElementById('ai-output');
-            const loadingState = document.getElementById('loading-state');
-            const resultState = document.getElementById('result-state');
-            const warningBox = document.getElementById('ai-warning');
-
-            if(!input.trim()) {
-                warningBox.classList.remove('hidden');
-                setTimeout(() => warningBox.classList.add('hidden'), 3000);
-                return;
-            }
-
-            loadingState.classList.remove('hidden');
-            resultState.classList.add('hidden');
-            
-            const text = input.toLowerCase();
-            let findings = [];
-
-            setTimeout(() => {
-                if (text.includes('shortening') || text.includes('mentega') || text.includes('margarin')) {
-                    findings.push('<span class="text-red-400">[CRITICAL]</span> Shortening/Lemak terdeteksi. Risiko turunan hewani (Lard).');
-                }
-                if (text.includes('perisa') || text.includes('flavor') || text.includes('daging')) {
-                    findings.push('<span class="text-amber-400">[WARNING]</span> Perisa sintetik terdeteksi. Wajib verifikasi sumber asam amino.');
-                }
-                if (text.includes('e471') || text.includes('emulsifier') || text.includes('pengemulsi')) {
-                    findings.push('<span class="text-amber-400">[WARNING]</span> Emulsifier (E471) terdeteksi. Verifikasi nabati/hewani.');
-                }
-                if (text.includes('rum') || text.includes('khamr') || text.includes('wine') || text.includes('angciu')) {
-                    findings.push('<span class="text-red-500 font-bold">[HARAM]</span> Turunan Khamr terdeteksi. Mutlak diharamkan.');
-                }
-                if (text.includes('gelatin') || text.includes('kolagen')) {
-                    findings.push('<span class="text-red-400">[CRITICAL]</span> Gelatin terdeteksi. Wajib Sertifikat Halal hewani.');
-                }
-                if(findings.length === 0) {
-                    findings.push('<span class="text-emerald-400">[SAFE]</span> Bebas dari kata kunci titik kritis tingkat tinggi.');
-                }
-
-                loadingState.classList.add('hidden');
-                resultState.classList.remove('hidden');
-                
-                outputDiv.innerHTML = `
-                    <p class="text-slate-300">> Memulai analisis: "${input.substring(0, 25)}..."</p>
-                    <p class="text-slate-300">> Mencocokkan SJPH BPJPH...</p>
-                    <p class="text-slate-300 mt-2">> Hasil:</p>
-                    <ul class="list-none space-y-2 mt-1 ml-2">
-                        ${findings.map(f => `<li>${f}</li>`).join('')}
-                    </ul>
-                `;
-            }, 1200);
-        }
-
-        // --- QUIZ LOGIC ---
-        const scenarios = [
+        // --- DATA: 10 SCENARIOS ---
+        const scenariosData = [
             {
-                id: 1, title: "Gerobak Martabak Manis", icon: "fa-store", category: "Makanan Siap Saji",
-                case: "Pedagang UMKM menggunakan kuas untuk mengoleskan margarin ke loyang dan martabak.",
-                question: "Alat/bahan apa yang berisiko menjadi titik kritis (mengandung babi)?",
-                options: ["Tepung terigu", "Kuas pengoles", "Loyang besi", "Air"],
-                correctAnswer: 1,
-                criticalPoints: ["<b>Kuas Pengoles:</b> Seringkali menggunakan bulu babi (bristle).", "<b>Margarin:</b> Emulsifier berisiko dari hewani."]
+                id: 1,
+                title: "1. Sambal Kemasan Botol Plastik UMKM",
+                category: "Pangan Halal",
+                npdStage: "NPD: Desain Kemasan & Pengemasan",
+                desc: "UMKM Sambal Kemasan memproduksi 5.000 botol PET sekali pakai per bulan. Timbulan sampah botol tinggi dan minyak cabai memperlambat daur ulang alami.",
+                baseline: "Botol PET sekali pakai dibuang ke TPA.",
+                halalBaseline: "Minyak goreng berulang & kebersihan tutup botol.",
+                tweaks: {
+                    "R0": { envScore: 90, loop: "Narrowing", halalScore: "Rendah", halalTag: "Tanpa Kemasan", maqashid: "Hifz al-Bi'ah", biz: "Sedang (Kurang Praktis)", envDesc: "Menghapus botol plastik kecil, mendorong dine-in atau penjualan curah.", halalDesc: "Mengeliminasi risiko pencemaran mikroplastik dan kontaminasi kemasan daur ulang.", prompts: ["Apakah konsumen sambal siap dengan konsep tanpa kemasan?", "Bagaimana ketahanan masa simpan sambal curah?"] },
+                    "R1": { envScore: 85, loop: "Slowing", halalScore: "Sedang", halalTag: "SOP Washing Halal", maqashid: "Hifz al-Bi'ah & Mal", biz: "Tinggi (Hemat HPP)", envDesc: "Penerapan sistem isi ulang botol kaca bermerek dengan insentif deposit pengembalian.", halalDesc: "Diperlukan SOP pencucian botol kaca bekas pakai konsumen agar terjamin suci dari mutanajjis.", prompts: ["Bagaimana menyusun SOP pencucian wadah bekas konsumen sesuai kriteria SJPH?", "Berapa biaya deposit botol kaca yang ideal?"] },
+                    "R2": { envScore: 75, loop: "Narrowing", halalScore: "Sangat Rendah", halalTag: "Material Efisien", maqashid: "Hifz al-Mal", biz: "Sangat Tinggi", envDesc: "Mengurangi ketebalan botol plastik PET hingga 20% dan porsi stiker label.", halalDesc: "Proses produksi tetap menggunakan bahan virgin food grade yang sah halal.", prompts: ["Apakah reduksi ketebalan plastik memengaruhi daya tahan benturan saat pengiriman?"] },
+                    "R3": { envScore: 80, loop: "Slowing", halalScore: "Sedang", halalTag: "Sanitasi Wadah", maqashid: "Hifz al-Bi'ah", biz: "Tinggi", envDesc: "Konsumen mengembalikan wadah botol kaca lama untuk didaur ulang langsung di tempat.", halalDesc: "Perlu pengecekan visual pastikan wadah bekas tidak pernah dipakai menampung bahan haram/najis.", prompts: ["Bagaimana mekanisme penukaran botol di tingkat outlet UMKM?"] },
+                    "R7": { envScore: 78, loop: "Closing", halalScore: "Rendah", halalTag: "Pakan Maggot Halal", maqashid: "Hifz al-Mal & Bi'ah", biz: "Tinggi", envDesc: "Ampas cabai dan biji sisa penggilingan dialihkan menjadi pakan maggot BSF.", halalDesc: "Sisa bahan nabati mentah dipastikan halal dan suci.", prompts: ["Bagaimana potensi ekonomi pengolahan biji cabai sisa menjadi pakan?"] },
+                    "R8": { envScore: 65, loop: "Closing", halalScore: "Tinggi", halalTag: "Food Grade rPET", maqashid: "Hifz al-Bi'ah", biz: "Sedang (rPET Mahal)", envDesc: "Menggunakan botol dari plastik daur ulang (rPET 100%).", halalDesc: "Wajib verifikasi pelacak asal resin rPET agar tidak berasal dari limbah terinfeksi najis.", prompts: ["Bagaimana melacak rantai pasok resin plastik daur ulang?"] }
+                }
             },
             {
-                id: 2, title: "Produksi Es Dawet", icon: "fa-glass-water", category: "Minuman",
-                case: "Pembuatan es dawet memeras pandan di blender dan menyaring gula merah cair.",
-                question: "Titik kritis dari proses tersebut adalah...",
-                options: ["Blender bekas non-halal", "Santan kelapa", "Daun pandan", "Es batu"],
-                correctAnswer: 0,
-                criticalPoints: ["<b>Blender:</b> Kontaminasi silang jika digunakan untuk daging non-halal.", "<b>Gula Merah:</b> Filter pemurnian (bone char)."]
+                id: 2,
+                title: "2. Kosmetik Halal Serum Wajah Dropper",
+                category: "Kosmetik Halal",
+                npdStage: "NPD: Pemilihan Formulasi & Dropper",
+                desc: "Produk Serum Wajah Halal menggunakan botol dropper kaca komposit dengan pipet karet & plastik yang sulit dipisahkan saat dibuang.",
+                baseline: "Kemasan multi-material berakhir di TPA karena sulit dipilah.",
+                halalBaseline: "Sumber kolagen & bahan pengawet serum.",
+                tweaks: {
+                    "R0": { envScore: 95, loop: "Narrowing", halalScore: "Sangat Rendah", halalTag: "Formulasi Solid", maqashid: "Hifz al-Bi'ah & Nafs", biz: "Sedang (Edukasi Pasar)", envDesc: "Serum padat (Solid Stick Serum) tanpa botol dropper cairan.", halalDesc: "Fokus audit hanya pada bahan baku solid & bebas pengawet terlarang.", prompts: ["Apakah efikasi serum padat setara dengan serum cair?", "Bagaimana penerimaan konsumen terhadap inovasi ini?"] },
+                    "R1": { envScore: 82, loop: "Slowing", halalScore: "Rendah", halalTag: "Cartridge Sealed", maqashid: "Hifz al-Mal", biz: "Sangat Tinggi", envDesc: "Sistem isi ulang inner cartridge pod aluminium, casing botol luar tetap.", halalDesc: "Cartridge dikemas dan disegel langsung di pabrik bersertifikat halal.", prompts: ["Bagaimana mengukur efisiensi jejak karbon dari pengiriman cartridge refill saja?"] },
+                    "R2": { envScore: 70, loop: "Narrowing", halalScore: "Rendah", halalTag: "Minimalis Pack", maqashid: "Hifz al-Mal", biz: "Tinggi", envDesc: "Mengurangi ukuran outer box karton sekunder dan tanpa sekatan plastik.", halalDesc: "Tidak mempengaruhi kehalalan formula serum.", prompts: ["Apakah perlindungan botol kaca tetap aman tanpa dus luar tebal?"] },
+                    "R3": { envScore: 78, loop: "Slowing", halalScore: "Sedang", halalTag: "Sterilisasi Dropper", maqashid: "Hifz al-Bi'ah", biz: "Sedang", envDesc: "Konsumen membawa kembali botol dropper ke counter kosmetik untuk disterilisasi.", halalDesc: "Wajib sterilisasi autoclave untuk mencegah kontaminasi mikroba & najis.", prompts: ["Apakah biaya sterilisasi toko sepadan dengan penghematan botol?"] },
+                    "R7": { envScore: 72, loop: "Closing", halalScore: "Rendah", halalTag: "By-Product Safe", maqashid: "Hifz al-Mal", biz: "Sedang", envDesc: "Mengolah sisa ekstraksi bahan botani serum menjadi pupuk organik tanaman.", halalDesc: "Bahan berasal dari tumbuhan suci (herbal/botani).", prompts: ["Bagaimana formulasi pupuk organik dari ekstrak botanical sisa?"] },
+                    "R8": { envScore: 68, loop: "Closing", halalScore: "Rendah", halalTag: "Mono-Glass", maqashid: "Hifz al-Bi me", biz: "Tinggi", envDesc: "Menggunakan botol kaca mono-material 100% daur ulang.", halalDesc: "Proses daur ulang kaca suhu tinggi menghilangkan kotoran secara total.", prompts: ["Mengapa kaca mono-material lebih disukai di industri sirkular?"] }
+                }
             },
             {
-                id: 3, title: "Toko Roti & Kue", icon: "fa-cake-candles", category: "Baking",
-                case: "Bakery membuat bolu menggunakan shortening dan perasa kue.",
-                question: "Bahan yang mutlak haram meski dipanggang adalah?",
-                options: ["Baking powder", "Ragi", "Rhum / Likuor", "Pewarna"],
-                correctAnswer: 2,
-                criticalPoints: ["<b>Rhum:</b> Penggunaan khamr mutlak haram meski alkoholnya menguap."]
+                id: 3,
+                title: "3. Busana Muslim & Fesyen Eco-Textile",
+                category: "Fesyen Halal",
+                npdStage: "NPD: Cutting Pattern & Pemilihan Kain",
+                desc: "Industri konveksi Gamis & Hijab menghasilkan 20% limbah kain perca sisa potong yang dibakar atau dibuang ke TPA.",
+                baseline: "Perca limbah tekstil sintetik dibakar.",
+                halalBaseline: "Kain bebas dari pelumas mesin berbahan babi/unsur haram.",
+                tweaks: {
+                    "R0": { envScore: 92, loop: "Narrowing", halalScore: "Sangat Rendah", halalTag: "Zero-Waste Design", maqashid: "Hifz al-Mal (Israf)", biz: "Sangat Tinggi", envDesc: "Zero-Waste Pattern Design: Merancang pola potong kain tanpa sisa perca.", halalDesc: "Menghindari perilaku Israf (pemborosan bahan) sejak tahap awal desain.", prompts: ["Bagaimana fleksibilitas desain busana syar'i dengan zero-waste pattern?"] },
+                    "R1": { envScore: 84, loop: "Slowing", halalScore: "Rendah", halalTag: "Sewa Busana Syar'i", maqashid: "Hifz al-Mal", biz: "Tinggi", envDesc: "Model bisnis sewa busana pesta/pesta pernikahan syar'i (Clothes Rental).", halalDesc: "Prosedur pencucian (laundry) wajib memenuhi kriteria bersuci dari najis.", prompts: ["Bagaimana jaminan kebersihan & pencucian pakaian sewa sesuai syariat?"] },
+                    "R2": { envScore: 76, loop: "Narrowing", halalScore: "Sangat Rendah", halalTag: "Efisiensi Benang", maqashid: "Hifz al-Mal", biz: "Tinggi", envDesc: "Penggunaan bahan kain organik lokal hemat air dan efisiensi benang jahit.", halalDesc: "Bahan benang nabati/kapas suci.", prompts: ["Berapa besar penghematan biaya bahan baku per gamis?"] },
+                    "R3": { envScore: 80, loop: "Slowing", halalScore: "Rendah", halalTag: "Thrift/Preloved Halal", maqashid: "Hifz al-Mal", biz: "Tinggi", envDesc: "Platform penjualan kembali (Preloved/Thrift) busana muslim layak pakai.", halalDesc: "Kejelasan status kepemilikan akad jual beli produk bekas.", prompts: ["Bagaimana validasi kualitas barang bekas agar tidak ada gharar (ketidakjelasan)?"] },
+                    "R7": { envScore: 88, loop: "Closing", halalScore: "Sangat Rendah", halalTag: "Upcycling Perca", maqashid: "Hifz al-Mal", biz: "Sangat Tinggi", envDesc: "Mengolah perca sisa menjadi aksesoris bros, konektor hijab, atau dompet.", halalDesc: "Memberikan nilai tambah keberkahan harta.", prompts: ["Berapa profit margin dari aksesoris berbahan dasar perca sisa?"] },
+                    "R8": { envScore: 65, loop: "Closing", halalScore: "Rendah", halalTag: "Daur Ulang Serat", maqashid: "Hifz al-Bi'ah", biz: "Sedang", envDesc: "Mendaur ulang benang dari pakaian lama menjadi serat kain baru.", halalDesc: "Bahan daur ulang tekstil dipastikan suci.", prompts: ["Apakah kekuatan tarik benang hasil daur ulang setara benang baru?"] }
+                }
             },
             {
-                id: 4, title: "Krim Anti-Aging", icon: "fa-spray-can-sparkles", category: "Kosmetik",
-                case: "Krim mengandung Kolagen, Ekstrak Plasenta, dan Gliserin.",
-                question: "Bahan yang haram jika bersumber dari manusia adalah?",
-                options: ["Kolagen", "Gliserin", "Plasenta", "Air mawar"],
-                correctAnswer: 2,
-                criticalPoints: ["<b>Plasenta:</b> Plasenta manusia mutlak haram. Plasenta hewan butuh sertifikasi."]
+                id: 4,
+                title: "4. Biokonversi Sisa Pangan Katering via Maggot BSF",
+                category: "Limbah & Pakan Halal",
+                npdStage: "NPD: Pengolahan Sisa Pangan Operasional",
+                desc: "Katering Halal menghasilkan 200kg sisa makanan per hari. Limbah diproses menggunakan larva Black Soldier Fly (BSF) untuk pakan ternak.",
+                baseline: "Sisa makanan busuk di TPA menghasilkan gas metana.",
+                halalBaseline: "Kehalalan pakan ternak dari hasil olahan limbah (Risiko Jalalah).",
+                tweaks: {
+                    "R0": { envScore: 88, loop: "Narrowing", halalScore: "Rendah", halalTag: "Reduksi Porsi", maqashid: "Hifz al-Mal", biz: "Sangat Tinggi", envDesc: "Pencegahan sisa makanan sejak awal dengan estimasi porsi presisi berbasis data.", halalDesc: "Mencegah tabdzir (menyia-nyiakan makanan).", prompts: ["Metode pemesanan apa yang bisa menekan sisa makanan katering hingga 0%?"] },
+                    "R1": { envScore: 80, loop: "Slowing", halalScore: "Rendah", halalTag: "Food Bank Redistribution", maqashid: "Hifz an-Nafs", biz: "Sedang", envDesc: "Mendistribusikan sisa makanan layak makan ke Food Bank sebelum menjadi limbah.", halalDesc: "Makanan masih bersih, halal, dan layak konsumsi manusia.", prompts: ["Bagaimana menjaga keamanan pangan selama proses redistribusi makanan?"] },
+                    "R7": { envScore: 95, loop: "Closing", halalScore: "Tinggi", halalTag: "Ternak Jalalah CCP", maqashid: "Hifz al-Bi'ah & Mal", biz: "Sangat Tinggi", envDesc: "Mengurai sisa makanan menjadi pupuk dan larva BSF kaya protein.", halalDesc: "Sisa makanan yang diberikan ke maggot harus dipisahkan dari najis/tulang babi agar ternak pemakan maggot tidak menjadi Jalalah.", prompts: ["Bagaimana SOP pemisahan sisa pangan halal dan non-halal di katering?", "Berapa lama masa karantina (istibra) hewan jalalah?"] },
+                    "R8": { envScore: 70, loop: "Closing", halalScore: "Rendah", halalTag: "Kompos Organik", maqashid: "Hifz al-Bi'ah", biz: "Tinggi", envDesc: "Mengomposkan sisa pangan menjadi pupuk tanaman organik.", halalDesc: "Pupuk organik nabati suci untuk pertanian.", prompts: ["Berapa rasio C/N ideal untuk pengomposan limbah katering?"] }
+                }
             },
             {
-                id: 5, title: "Kapsul Suplemen", icon: "fa-capsules", category: "Farmasi",
-                case: "Suplemen multivitamin dalam kapsul keras transparan.",
-                question: "Titik kritis terbesar sediaan kapsul transparan adalah?",
-                options: ["Tinta cetak", "Cangkang kapsul (Gelatin)", "Botol kemasan", "Kapas penahan"],
-                correctAnswer: 1,
-                criticalPoints: ["<b>Cangkang Kapsul:</b> Gelatin sering diekstrak dari tulang babi/sapi."]
+                id: 5,
+                title: "5. Limbah Pabrik Tempe (Air Rebusan & Kulit)",
+                category: "Pangan Halal",
+                npdStage: "NPD: Pengolahan Produk Sampingan (By-Product)",
+                desc: "Pabrik Tempe membuang air limbah cair asam dan kulit kedelai langsung ke sungai, menyebabkan pencemaran bau dan biotirta.",
+                baseline: "Air limbah cair asam mencemari sungai lokal.",
+                halalBaseline: "Bahan penolong ragi & kebersihan air pembersihan.",
+                tweaks: {
+                    "R2": { envScore: 82, loop: "Narrowing", halalScore: "Sangat Rendah", halalTag: "Hemat Air Operasional", maqashid: "Hifz al-Bi'ah", biz: "Tinggi", envDesc: "Instalasi sirkulasi air perendaman kedelai dengan sistem penyaringan efisien.", halalDesc: "Penggunaan air bersih suci dan mensucikan (Mutlaq).", prompts: ["Apakah rasa tempe berubah jika air perendaman diresirkulasi dengan filter?"] },
+                    "R7": { envScore: 92, loop: "Closing", halalScore: "Sangat Rendah", halalTag: "Nata de Soya Halal", maqashid: "Hifz al-Mal & Bi'ah", biz: "Sangat Tinggi", envDesc: "Mengolah cair sisa rebusan jadi Nata de Soya dan kulit kedelai jadi tepung serat.", halalDesc: "Prinsip Maslahah Mursalah: mengolah limbah menjadi bahan makanan bergizi tinggi.", prompts: ["Bagaimana uji kelayakan pasar untuk produk tepung kulit kedelai?"] },
+                    "R8": { envScore: 75, loop: "Closing", halalScore: "Sangat Rendah", halalTag: "Pupuk Cair Biogas", maqashid: "Hifz al-Bi'ah", biz: "Tinggi", envDesc: "Pengolahan limbah cair menjadi Biogas energi listrik dan pupuk cair.", halalDesc: "Energi terbarukan yang membawa kemaslahatan lingkungan.", prompts: ["Berapa estimasi penghematan elpiji pabrik tempe dengan unit Biogas?"] }
+                }
             },
             {
-                id: 6, title: "Truk Rantai Dingin", icon: "fa-truck-fast", category: "Logistik",
-                case: "Truk freezer mendistribusikan daging ayam beku halal.",
-                question: "Jika truk pernah mengangkut daging babi, apa syaratnya?",
-                options: ["Dicuci sabun biasa", "Dijemur", "Pencucian najis mughallazah", "Disinfektan"],
-                correctAnswer: 2,
-                criticalPoints: ["<b>Sanitasi:</b> Wajib prosedur penyucian najis berat dengan tanah/sabun khusus."]
+                id: 6,
+                title: "6. Katering Nasi Kotak & Event Halal",
+                category: "Jasa Boga Halal",
+                npdStage: "NPD: Layanan Operasional Katering",
+                desc: "Acara seminar menyisakan 500 kotak kertas bersekat plastik berlapis styrofoam sekali pakai.",
+                baseline: "Kotak mika/styrofoam sekali pakai dibuang ke TPA.",
+                halalBaseline: "Sertifikasi Halal Dapur Katering.",
+                tweaks: {
+                    "R0": { envScore: 94, loop: "Slowing", halalScore: "Tinggi", halalTag: "SOP Washing Halal", maqashid: "Hifz al-Bi'ah", biz: "Sedang (Perlu Logistik)", envDesc: "Menggunakan Bento Box Stainless Steel sewa guna ulang yang ditarik pasca acara.", halalDesc: "Dapur katering wajib memiliki fasilitas wash station khusus bersertifikat halal.", prompts: ["Bagaimana mengelola logistik pengembalian bento dari peserta seminar?"] },
+                    "R2": { envScore: 78, loop: "Narrowing", halalScore: "Sangat Rendah", halalTag: "Kemasan Biodegradable", maqashid: "Hifz al-Bi'ah", biz: "Tinggi", envDesc: "Mengganti styrofoam dengan dus kertas daur ulang berlapisan pelepah pisang/singkong.", halalDesc: "Bahan alami bebas dari zat pelapis berbasis bahan haram.", prompts: ["Apakah biaya kemasan singkong dapat bersaing dengan kertas biasa?"] }
+                }
             },
             {
-                id: 7, title: "Bumbu Kaldu Mie", icon: "fa-bowl-food", category: "Pangan",
-                case: "Pabrik memproduksi mie dengan MSG (Monosodium Glutamat).",
-                question: "Titik kritis MSG mikrobial terletak pada...",
-                options: ["Warna kristal", "Proses kemas", "Rasa umami", "Media tumbuh bakteri"],
-                correctAnswer: 3,
-                criticalPoints: ["<b>Media Pertumbuhan:</b> Bakteri fermentasi tidak boleh dikembangbiakkan di media najis/babi."]
+                id: 7,
+                title: "7. Air Minum Dalam Kemasan (AMDK)",
+                category: "Minuman Halal",
+                npdStage: "NPD: Desain Distribusi & Kemasan Botol",
+                desc: "Produsen Air Minum Dalam Kemasan (AMDK) memproduksi jutaan botol kemasan sekali pakai 600ml.",
+                baseline: "Timbulan botol plastik sekali pakai di laut.",
+                halalBaseline: "Sumber air suci mensucikan & filtrasinya.",
+                tweaks: {
+                    "R1": { envScore: 92, loop: "Slowing", halalScore: "Rendah", halalTag: "Filtrasi Suci UV", maqashid: "Hifz al-Bi'ah & Mal", biz: "Sangat Tinggi", envDesc: "Menyediakan Stasiun Isi Ulang Air Pintar (IoT Refill Station) bagi pengguna tumbler.", halalDesc: "Air terjamin suci dengan sistem sterilisasi UV tanpa risiko wadah luar.", prompts: ["Apakah bisnis stasiun refill dapat menggeser penjualan AMDK botolan?"] },
+                    "R3": { envScore: 85, loop: "Slowing", halalScore: "Sedang", halalTag: "Galon Kaca Guna Ulang", maqashid: "Hifz al-Mal", biz: "Tinggi", envDesc: "Penggunaan Galon Kaca / Kopoliester guna ulang dengan sistem deposit penukaran.", halalDesc: "Pencucian galon wajib menggunakan sistem spray otomatis bebas najis.", prompts: ["Berapa siklus pemakaian galon kaca sebelum mengalami keretakan?"] }
+                }
+            },
+            {
+                id: 8,
+                title: "8. Gelatin & Kolagen Tulang Sapi",
+                category: "Bahan Baku Halal",
+                npdStage: "NPD: Sourcing Bahan Baku Sekunder",
+                desc: "Rumah Potong Hewan (RPH) menyisakan limbah tulang & kulit sapi yang tidak dimaksimalkan nilainya.",
+                baseline: "Tulang sapi membusuk menjadi limbah padat RPH.",
+                halalBaseline: "Penyembelihan Syar'i hewan asal tulang.",
+                tweaks: {
+                    "R7": { envScore: 90, loop: "Closing", halalScore: "Sangat Tinggi", halalTag: "Traceability Sapi Halal", maqashid: "Hifz al-Din & Mal", biz: "Sangat Tinggi", envDesc: "Ekstraksi tulang sapi RPH menjadi gelatin halal untuk cangkang kapsul obat.", halalDesc: "Wajib memastikan 100% tulang berasal dari sapi yang disembelih secara syar'i (bukan bangkai).", prompts: ["Bagaimana sistem verifikasi dokumen kehalalan RPH asal tulang?"] },
+                    "R8": { envScore: 80, loop: "Closing", halalScore: "Tinggi", halalTag: "Tepung Tulang Pakan", maqashid: "Hifz al-Mal", biz: "Tinggi", envDesc: "Mengolah sisa ekstraksi tulang menjadi tepung tulang kalsium tinggi.", halalDesc: "Bahan baku dipastikan dari hewan halal yang disembelih sah.", prompts: ["Bagaimana pangsa pasar pupuk kalsium organik dari tepung tulang?"] }
+                }
+            },
+            {
+                id: 9,
+                title: "9. Sabun & Pembersih Rumah Tangga Refill",
+                category: "Personal Care",
+                npdStage: "NPD: Skema Distribusi Refill Station",
+                desc: "Produk pembersih lantai halal dikemas dalam kantong pouch plastik multi-layer yang tak bisa didaur ulang.",
+                baseline: "Pouch plastik sachet/refill sekali pakai dibuang.",
+                halalBaseline: "Kandungan surfaktan bebas asam lemak babi.",
+                tweaks: {
+                    "R1": { envScore: 88, loop: "Slowing", halalScore: "Sedang", halalTag: "Refill Tap Hygiene", maqashid: "Hifz al-Bi'ah", biz: "Tinggi", envDesc: "Bulk Refill Store: Konsumen mengisi ulang cairan pembersih dari dispenser jeriken toko.", halalDesc: "Menjaga keran pengisian bebas dari kontaminasi zat najis dari luar.", prompts: ["Bagaimana penjaminan takaran (timbangan) yang adil dalam Islam pada toko curah?"] }
+                }
+            },
+            {
+                id: 10,
+                title: "10. Kosmetik Refillable Compact Powder",
+                category: "Kosmetik Halal",
+                npdStage: "NPD: Desain Wadah Compact",
+                desc: "Wadah bedak padat terbuat dari cermin, magnet, dan plastik akrilik tebal yang langsung dibuang ketika bedak habis.",
+                baseline: "Kemasan bedak mewah dibuang utuh.",
+                halalBaseline: "Bahan pewarna & binder bedak halal.",
+                tweaks: {
+                    "R3": { envScore: 85, loop: "Slowing", halalScore: "Sangat Rendah", halalTag: "Inner Pan Sealed", maqashid: "Hifz al-Mal", biz: "Sangat Tinggi", envDesc: "Casing bedak mewah dipakai selamanya, konsumen hanya membeli piringan pan logam isinya.", halalDesc: "Kemasan inner pan disegel dari pabrik, sangat aman dan halal secara syariat.", prompts: ["Apakah loyalitas merek meningkat dengan casing bedak yang reusable?"] }
+                }
             }
         ];
 
-        function renderCards() {
-            const container = document.getElementById('scenario-container');
-            container.innerHTML = scenarios.map((item, index) => `
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">${item.category}</span>
-                        <i class="fa-solid ${item.icon} text-slate-400 text-xl"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-900 mb-2">${item.id}. ${item.title}</h3>
-                    <p class="text-slate-600 mb-4 text-sm">${item.case}</p>
-                    
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 mb-4">
-                        <p class="font-semibold text-slate-800 mb-3 text-sm">${item.question}</p>
-                        <div class="space-y-2" id="options-${item.id}">
-                            ${item.options.map((opt, i) => `
-                                <button onclick="checkAnswer(${item.id}, ${i})" class="w-full text-left p-3 rounded-lg border border-slate-200 bg-white hover:bg-emerald-50 text-sm font-medium transition-colors flex justify-between items-center">
-                                    <span>${String.fromCharCode(65 + i)}. ${opt}</span>
-                                    <i class="fa-solid fa-circle-check text-emerald-500 hidden check-icon"></i>
-                                    <i class="fa-solid fa-circle-xmark text-red-500 hidden cross-icon"></i>
-                                </button>
-                            `).join('')}
-                        </div>
-                    </div>
-                    
-                    <button id="btn-analysis-${item.id}" onclick="toggleAnswer(${item.id})" class="hidden w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold py-3 px-4 rounded-xl transition-colors justify-between items-center text-sm">
-                        <span>Lihat Analisis</span>
-                        <i class="fa-solid fa-chevron-down" id="icon-${item.id}"></i>
-                    </button>
-                    
-                    <div id="answer-${item.id}" class="answer-reveal mt-2">
-                        <div class="p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg text-sm">
-                            <ul class="list-disc pl-4 text-slate-700 space-y-1">
-                                ${item.criticalPoints.map(point => `<li>${point}</li>`).join('')}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
+        // --- DATA: YOUTUBE REFERENCES ---
+        const youtubeVideos = [
+            {
+                title: "Konsep Ekonomi Sirkular & Kerangka 9R di Indonesia",
+                channel: "Bappenas RI / Circular Economy Platform",
+                url: "https://www.youtube.com/embed/5m3l0T8X44g",
+                category: "Prinsip Sirkular",
+                takeaways: "Memahami bagaimana kerangka 9R (Refuse-Recycle) diterapkan dalam Peta Jalan Ekonomi Sirkular Indonesia 2025-2045 untuk mengurangi sampah plastik & pangan."
+            },
+            {
+                title: "Halalan Thayyiban: Dari Bahan hingga Bebas Sampah",
+                channel: "Halal Research Center",
+                url: "https://www.youtube.com/embed/5m3l0T8X44g",
+                category: "Syariah & Halal",
+                takeaways: "Menjelaskan perluasan makna Thayyib. Produk halal tidak boleh hanya suci komposisinya, tetapi proses kemasannya tidak boleh merusak lingkungan (Fasad)."
+            },
+            {
+                title: "Pengolahan Limbah Organik dengan Maggot BSF",
+                channel: "Sustainable Agriculture ID",
+                url: "https://www.youtube.com/embed/5m3l0T8X44g",
+                category: "Bioconversion",
+                takeaways: "Studi kasus penguraian sisa makanan katering menjadi protein pakan ternak via larva BSF serta tinjauan hukum fikih Hewan Jalalah."
+            },
+            {
+                title: "Desain Kemasan Sirkular (Circular Packaging Design)",
+                channel: "Product Design Academy",
+                url: "https://www.youtube.com/embed/5m3l0T8X44g",
+                category: "NPD & Desain",
+                takeaways: "Cara memilih mono-material plastik, desain dapat dibongkar (design for disassembly), dan integrasi sistem refill botol kaca."
+            }
+        ];
+
+        // --- DATA: GLOSSARY ---
+        const glossaryTerms = [
+            { term: "Ekonomi Sirkular", cat: "sirkular", def: "Model ekonomi yang berfokus pada eliminasi sampah dan polusi, sirkulasi produk dan bahan pada nilai tertingginya, serta regenerasi alam sejak tahap desain." },
+            { term: "Ekonomi Linear", cat: "sirkular", def: "Model tradisional 'Take-Make-Waste' di mana sumber daya alam diambil, dibuat menjadi produk, lalu langsung dibuang setelah dipakai." },
+            { term: "Prinsip 9R", cat: "sirkular", def: "Hirarki strategi sirkularitas mulai dari R0 (Refuse), R1 (Rethink), R2 (Reduce), R3 (Reuse), R4 (Repair), R5 (Refurbish), R6 (Remanufacture), R7 (Repurpose), hingga R8 (Recycle)." },
+            { term: "Halalan Thayyiban", cat: "syariah", def: "Prinsip konsumsi/produksi Islam: Halal (sah secara hukum syariat/bahan) dan Thayyib (baik, aman, bernutrisi, higienis, serta tidak merusak lingkungan)." },
+            { term: "Maqashid Syariah", cat: "syariah", def: "Tujuan utama hukum Islam untuk mewujudkan kemaslahatan, meliputi perlindungan Agama (Din), Jiwa (Nafs), Akal ('Aql), Keturunan (Nasl), Harta (Mal), dan Lingkungan (Bi'ah)." },
+            { term: "Hifz al-Bi'ah", cat: "syariah", def: "Prinsip perlindungan dan pelestarian lingkungan hidup sebagai bagian integral dari Maqashid Syariah kontemporer." },
+            { term: "Titik Kritis Halal", cat: "syariah", def: "Tahapan dalam rantai pasok atau formulasi produk di mana terdapat risiko kontaminasi bahan haram atau najis." },
+            { term: "Istihalah", cat: "syariah", def: "Perubahan wujud dan sifat suatu zat najis/haram secara total menjadi zat baru yang suci melalui reaksi kimia atau alami." },
+            { term: "Israf & Tabdzir", cat: "syariah", def: "Israf adalah perbuatan berlebih-lebihan dalam mengonsumsi/menggunakan sumber daya; Tabdzir adalah menyia-nyiakan harta/bahan tanpa manfaat." },
+            { term: "Maslahah Mursalah", cat: "syariah", def: "Prinsip penetapan hukum Islam berdasarkan kemanfaatan umum yang tidak diatur secara spesifik oleh dalil, seperti regulasi daur ulang sampah." },
+            { term: "Slowing the Loop", cat: "sirkular", def: "Memperlambat perputaran sumber daya dengan memperpanjang umur pakai produk (misal: botol kaca refill, garansi perbaikan)." },
+            { term: "Closing the Loop", cat: "sirkular", def: "Menutup siklus bahan melalui daur ulang (recycling) sehingga sisa produk kembali menjadi bahan baku sekunder." },
+            { term: "Narrowing the Loop", cat: "sirkular", def: "Menyempitkan penggunaan sumber daya dengan efisiensi porsi atau pengurangan ketebalan bahan per unit produk." },
+            { term: "Hewan Jalalah", cat: "syariah", def: "Ternak atau ikan yang sebagian besar makanannya berasal dari zat najis/kotoran, sehingga perlu dikarantina (ditabrakkan pakan bersih) sebelum disembelih." },
+            { term: "Greenwashing (Tadlis)", cat: "npd", def: "Praktik penipuan pemasaran dengan mengklaim produk ramah lingkungan atau halal-sirkular secara palsu, yang dilarang dalam syariat (Tadlis)." }
+        ];
+
+        // --- APP STATE ---
+        let currentScenarioId = 1;
+
+        // --- INITIALIZATION ---
+        window.onload = function() {
+            renderScenarioList();
+            loadScenario(1);
+            renderVideos();
+            renderGlossary(glossaryTerms);
+        };
+
+        // --- TAB SWITCHING LOGIC ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('tab-active'));
+
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+            if (activeBtn) activeBtn.classList.add('tab-active');
         }
 
-        function checkAnswer(scenarioId, selectedIndex) {
-            const scenario = scenarios.find(s => s.id === scenarioId);
-            const container = document.getElementById(`options-${scenarioId}`);
-            const buttons = container.querySelectorAll('button');
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // --- SCENARIO SIMULATOR LOGIC ---
+        function renderScenarioList() {
+            const container = document.getElementById('scenario-selector-container');
+            if(!container) return;
+            container.innerHTML = '';
             
-            buttons.forEach((btn, i) => {
-                btn.disabled = true;
-                btn.classList.add('cursor-not-allowed');
-                
-                if (i === scenario.correctAnswer) {
-                    btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-800');
-                    btn.querySelector('.check-icon').classList.remove('hidden');
-                } else if (i === selectedIndex) {
-                    btn.classList.add('bg-red-100', 'border-red-500', 'text-red-800');
-                    btn.querySelector('.cross-icon').classList.remove('hidden');
-                } else {
-                    btn.classList.add('opacity-50');
+            scenariosData.forEach(scen => {
+                const btn = document.createElement('button');
+                btn.id = `scen-btn-${scen.id}`;
+                btn.onclick = () => loadScenario(scen.id);
+                btn.className = `w-full text-left p-3 rounded-lg border transition flex flex-col justify-between ${scen.id === currentScenarioId ? 'bg-emerald-50 border-emerald-500 font-bold' : 'bg-white border-slate-200 hover:bg-slate-50'}`;
+                btn.innerHTML = `
+                    <span class="text-xs ${scen.id === currentScenarioId ? 'text-emerald-700' : 'text-slate-800'} font-semibold block truncate">${scen.title}</span>
+                    <span class="text-[10px] text-slate-400 mt-1">${scen.category}</span>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
+        function loadScenario(id) {
+            currentScenarioId = id;
+            const scen = scenariosData.find(s => s.id === id);
+            if(!scen) return;
+
+            // Update UI list highlighting
+            scenariosData.forEach(s => {
+                const b = document.getElementById(`scen-btn-${s.id}`);
+                if (b) {
+                    if (s.id === id) {
+                        b.className = 'w-full text-left p-3 rounded-lg border transition bg-emerald-50 border-emerald-500 font-bold';
+                    } else {
+                        b.className = 'w-full text-left p-3 rounded-lg border transition bg-white border-slate-200 hover:bg-slate-50';
+                    }
                 }
             });
 
-            document.getElementById(`btn-analysis-${scenarioId}`).classList.remove('hidden');
-            document.getElementById(`btn-analysis-${scenarioId}`).classList.add('flex');
+            // Fill details
+            document.getElementById('scen-title').innerText = scen.title;
+            document.getElementById('scen-category').innerText = scen.category;
+            document.getElementById('scen-npd-stage').innerHTML = `<i class="fa-solid fa-diagram-project mr-1"></i> ${scen.npdStage}`;
+            document.getElementById('scen-desc').innerText = scen.desc;
+            document.getElementById('scen-baseline').innerText = scen.baseline;
+            document.getElementById('scen-halal-base').innerText = scen.halalBaseline;
+
+            updateAnalyticalScores();
+        }
+
+        function updateAnalyticalScores() {
+            const scen = scenariosData.find(s => s.id === currentScenarioId);
+            if(!scen) return;
+
+            const rStrategy = document.getElementById('tweak-9r-select').value;
             
-            const answerDiv = document.getElementById(`answer-${scenarioId}`);
-            if (!answerDiv.classList.contains('open')) toggleAnswer(scenarioId);
+            // Check if specific tweak data exists or fallback to dynamic estimate
+            const tweakData = (scen.tweaks && scen.tweaks[rStrategy]) ? scen.tweaks[rStrategy] : {
+                envScore: 75,
+                loop: "Slowing Loop",
+                halalScore: "Sedang",
+                halalTag: "Audit Rantai Pasok",
+                maqashid: "Hifz al-Bi'ah",
+                biz: "Tinggi",
+                envDesc: `Menerapkan strategi ${rStrategy} membantu mengurangi jejak karbon dan limbah material pada skenario ini.`,
+                halalDesc: "Penerapan standar operasional kebersihan (SOP) mutlak diperhatikan untuk menjamin status suci produk.",
+                prompts: [
+                    "Bagaimana insentif ekonomi bagi konsumen yang menerapkan perubahan ini?",
+                    "Langkah sertifikasi jaminan produk halal apa yang perlu disesuaikan?"
+                ]
+            };
+
+            // Update DOM metrics
+            document.getElementById('score-env').innerText = `${tweakData.envScore}/100`;
+            document.getElementById('loop-type').innerText = tweakData.loop;
+            document.getElementById('score-halal').innerText = tweakData.halalScore;
+            document.getElementById('halal-tag').innerText = tweakData.halalTag;
+            document.getElementById('score-maqashid').innerText = tweakData.maqashid;
+            document.getElementById('score-biz').innerText = tweakData.biz;
+
+            document.getElementById('feedback-env').innerText = tweakData.envDesc;
+            document.getElementById('feedback-halal').innerText = tweakData.halalDesc;
+
+            // Render prompts
+            const promptList = document.getElementById('prompt-list');
+            promptList.innerHTML = '';
+            tweakData.prompts.forEach(p => {
+                const li = document.createElement('li');
+                li.innerText = p;
+                promptList.appendChild(li);
+            });
         }
 
-        function toggleAnswer(id) {
-            const div = document.getElementById(`answer-${id}`);
-            const icon = document.getElementById(`icon-${id}`);
-            div.classList.toggle('open');
-            icon.classList.toggle('fa-chevron-down');
-            icon.classList.toggle('fa-chevron-up');
+        // --- YOUTUBE GALLERY RENDER ---
+        function renderVideos() {
+            const grid = document.getElementById('video-gallery-grid');
+            if(!grid) return;
+            grid.innerHTML = '';
+
+            youtubeVideos.forEach(vid => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <div class="relative bg-slate-900 aspect-video flex items-center justify-center text-white">
+                            <iframe class="w-full h-full" src="${vid.url}" title="${vid.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="p-4 space-y-2">
+                            <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">${vid.category}</span>
+                            <h4 class="font-bold text-slate-900 text-sm leading-snug">${vid.title}</h4>
+                            <p class="text-xs text-slate-400"><i class="fa-solid fa-circle-check text-blue-500 mr-1"></i> ${vid.channel}</p>
+                            <p class="text-xs text-slate-600 bg-slate-50 p-2.5 rounded border border-slate-100 mt-2">
+                                <strong>Takeaway Pembelajaran:</strong> ${vid.takeaways}
+                            </p>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
         }
 
-        // Init
-        document.addEventListener('DOMContentLoaded', renderCards);
+        // --- GLOSSARY LOGIC ---
+        function renderGlossary(terms) {
+            const container = document.getElementById('glossary-grid');
+            if(!container) return;
+            container.innerHTML = '';
+
+            if(terms.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 col-span-2 text-center py-6">Tidak ada istilah yang cocok dengan pencarian.</p>`;
+                return;
+            }
+
+            terms.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2";
+                
+                let badgeColor = "bg-slate-100 text-slate-700";
+                if(item.cat === 'sirkular') badgeColor = "bg-emerald-100 text-emerald-800";
+                if(item.cat === 'syariah') badgeColor = "bg-amber-100 text-amber-800";
+                if(item.cat === 'npd') badgeColor = "bg-blue-100 text-blue-800";
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-slate-900 text-base">${item.term}</h4>
+                        <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded ${badgeColor}">${item.cat}</span>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed">${item.def}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterGlossary() {
+            const query = document.getElementById('glossary-search').value.toLowerCase();
+            const category = document.getElementById('glossary-category').value;
+
+            const filtered = glossaryTerms.filter(item => {
+                const matchesSearch = item.term.toLowerCase().includes(query) || item.def.toLowerCase().includes(query);
+                const matchesCat = category === 'all' || item.cat === category;
+                return matchesSearch && matchesCat;
+            });
+
+            renderGlossary(filtered);
+        }
     </script>
 </body>
 </html>
